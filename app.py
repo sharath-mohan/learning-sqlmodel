@@ -19,11 +19,19 @@ def create_db_and_tables():
     SQLModel.metadata.create_all(engine)
 
 
-# with Session(engine) as session:
-#     hero_1 = Hero(name="Mohan", secret_name="Michel", age=27)
-#     session.add(hero_1)
-#     session.commit()
+def create_hero():
+    print("insert a new record")
+    hero = Hero(name="Itachi Uchiha", secret_name="The clan killer")
+    with Session(engine) as session:
+        session.add(hero)
+        session.commit()
+        session.close()
+
+
+def main():
+    create_db_and_tables()
+    create_hero()
 
 
 if __name__ == "__main__":
-    create_db_and_tables()
+    main()
