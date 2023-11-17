@@ -1,5 +1,5 @@
 from typing import Optional
-from sqlmodel import Field, Session, SQLModel, create_engine
+from sqlmodel import Field, Session, SQLModel, create_engine, select
 
 
 class Hero(SQLModel, table=True):
@@ -28,9 +28,18 @@ def create_hero():
         session.close()
 
 
+def read_all_heroes():
+    print("read all records")
+    with Session(engine) as session:
+        results = session.exec(select(Hero))
+        print(results.fetchall(),"results")
+        session.close()
+
+
 def main():
     create_db_and_tables()
-    create_hero()
+    # create_hero()
+    read_all_heroes()
 
 
 if __name__ == "__main__":
