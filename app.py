@@ -1,5 +1,5 @@
 from typing import Optional
-from sqlmodel import Field, Session, SQLModel, create_engine, select, and_, or_
+from sqlmodel import Field, Session, SQLModel, create_engine, select, and_, or_, col
 
 
 class Hero(SQLModel, table=True):
@@ -72,6 +72,16 @@ def where_or_clause():
         session.close()
 
 
+def where_like_clause():
+    print("where like clause")
+    with Session(engine) as session:
+        statement = select(Hero).where(col(Hero.name).ilike("%uchiha"))
+        results = session.exec(statement)
+        for hero in results:
+            print(hero)
+        session.close()
+
+
 def main():
     create_db_and_tables()
     # create_hero()
@@ -79,6 +89,7 @@ def main():
     where_clause()
     where_and_clause()
     where_or_clause()
+    where_like_clause()
 
 
 if __name__ == "__main__":
