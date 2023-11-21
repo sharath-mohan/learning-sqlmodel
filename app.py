@@ -22,13 +22,14 @@ def create_db_and_tables():
 def create_hero():
     print("insert a new record")
     # hero = Hero(name="Itachi Uchiha", secret_name="The clan killer")
-    hero1 = Hero(name="Madara Uchiha", secret_name="The ghost of the Uchiha")
-    hero2 = Hero(name="Sasuke Uchiha", secret_name="The last Uchiha")
-    hero3 = Hero(name="Kakashi Hatake", secret_name="The copt ninja")
+    # hero1 = Hero(name="Madara Uchiha", secret_name="The ghost of the Uchiha")
+    # hero2 = Hero(name="Sasuke Uchiha", secret_name="The last Uchiha")
+    # hero3 = Hero(name="Kakashi Hatake", secret_name="The copt ninja")
+    hero4 = Hero(name="Shikamaru Nara", secret_name="The lazy one")
+    hero5 = Hero(name="Hinata Hyuga", secret_name="The Byakugan Pricess")
     with Session(engine) as session:
-        session.add(hero1)
-        session.add(hero2)
-        session.add(hero3)
+        session.add(hero4)
+        session.add(hero5)
         session.commit()
         session.close()
 
@@ -36,9 +37,9 @@ def create_hero():
 def read_all_heroes():
     print("read all records")
     with Session(engine) as session:
-        results = session.exec(select(Hero))
+        results = session.exec(select(Hero).order_by(Hero.user_id))
         for hero in results:
-            print(hero)
+            print(hero.name)
         session.close()
 
 
@@ -82,14 +83,25 @@ def where_like_clause():
         session.close()
 
 
+def limit_offset():
+    print("limit offset")
+    with Session(engine) as session:
+        statement = select(Hero).limit(3).offset(2).order_by(Hero.user_id)
+        results = session.exec(statement)
+        for hero in results:
+            print(hero.name)
+        session.close()
+
+
 def main():
     create_db_and_tables()
     # create_hero()
     read_all_heroes()
-    where_clause()
-    where_and_clause()
-    where_or_clause()
-    where_like_clause()
+    # where_clause()
+    # where_and_clause()
+    # where_or_clause()
+    # where_like_clause()
+    limit_offset()
 
 
 if __name__ == "__main__":
